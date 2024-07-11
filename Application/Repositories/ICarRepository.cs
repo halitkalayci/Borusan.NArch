@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IBrandRepository : IBaseRepository<Brand, Guid>
+    public interface ICarRepository : IBaseRepository<Car, Guid>
     {
+        Car? GetByPlate(string plate);
     }
 }
