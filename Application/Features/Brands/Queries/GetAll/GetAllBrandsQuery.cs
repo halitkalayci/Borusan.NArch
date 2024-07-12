@@ -30,6 +30,9 @@ namespace Application.Features.Brands.Queries.GetAll
                 List<Brand> brands = _brandRepository.GetAll();
 
                 List<GetAllBrandItemResponse> response = _mapper.Map<List<GetAllBrandItemResponse>>(brands);
+
+
+                return Task.FromResult(response);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Brands.Commands.Create;
+using Application.Features.Brands.Queries.GetAll;
 using Application.Repositories;
 using Domain.Entities;
 using MediatR;
@@ -25,6 +26,14 @@ namespace WebAPI.Controllers
             CreatedBrandResponse? response = await _mediator.Send(createBrandCommand);
 
             return Created("", response);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            GetAllBrandsQuery getAllBrandsQuery = new();
+
+            var response = await _mediator.Send(getAllBrandsQuery);
+            return Ok(response);
         }
     }
 }
