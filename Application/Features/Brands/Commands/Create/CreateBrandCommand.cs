@@ -10,14 +10,14 @@ using Application.Repositories;
 namespace Application.Features.Brands.Commands.Create
 {
     // Unit => Fonksiyonda void ne ise request'de o.
-    public class CreateBrandCommand : IRequest<Unit>
+    public class CreateBrandCommand : IRequest<CreatedBrandResponse>
     {
         // Komutun işlevini yerine getirmesi için alması gereken argümanlar.
 
         public string Name { get; set; }
 
 
-        public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, Unit>
+        public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
         {
             // Gerekli bağımlılıklar
 
@@ -28,7 +28,7 @@ namespace Application.Features.Brands.Commands.Create
                 _brandRepository = brandRepository;
             }
 
-            public async Task<Unit> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+            public async Task<CreatedBrandResponse> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
                 // İlgili request ile istediğimiz işlemi yapabiliriz.
                 Brand brand = new Brand()
@@ -36,8 +36,14 @@ namespace Application.Features.Brands.Commands.Create
                     Name = request.Name,
                 };
 
-                await _brandRepository.AddAsync(brand);
-                return Unit.Value;
+                Brand addedBrand = await _brandRepository.AddAsync(brand);
+
+                CreatedBrandResponse response = new()
+                {
+                    Id = addedBrand.Id,
+                    Name = addedBrand.Name
+                };
+                return response;
             }
         }
     }
