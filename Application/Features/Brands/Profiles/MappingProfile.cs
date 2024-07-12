@@ -1,4 +1,5 @@
 ﻿using Application.Features.Brands.Commands.Create;
+using Application.Features.Brands.Queries.GetAll;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,6 +16,7 @@ namespace Application.Features.Brands.Profiles
         {
             CreateMap<CreateBrandCommand, Brand>().ReverseMap();
             CreateMap<CreatedBrandResponse, Brand>().ReverseMap();
+            CreateMap<GetAllBrandItemResponse, Brand>().ReverseMap();
         }
     }
 }
