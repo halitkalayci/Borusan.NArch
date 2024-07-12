@@ -46,11 +46,7 @@ namespace Application.Features.Brands.Commands.Create
 
                 Brand addedBrand = await _brandRepository.AddAsync(brand);
 
-                CreatedBrandResponse response = new()
-                {
-                    Id = addedBrand.Id,
-                    Name = addedBrand.Name
-                };
+                CreatedBrandResponse response = _mapper.Map<CreatedBrandResponse>(addedBrand);
                 return response;
             }
         }

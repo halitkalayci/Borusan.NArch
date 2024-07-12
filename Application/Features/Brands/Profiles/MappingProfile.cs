@@ -14,6 +14,7 @@ namespace Application.Features.Brands.Profiles
         public MappingProfile()
         {
             CreateMap<CreateBrandCommand, Brand>().ReverseMap();
+            CreateMap<CreatedBrandResponse, Brand>().ReverseMap();
         }
     }
 }
