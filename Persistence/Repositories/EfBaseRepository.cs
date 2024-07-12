@@ -28,6 +28,11 @@ namespace Persistence.Repositories
             return entity;
         }
 
+        public Task<TEntity> AddAsync(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(TEntity entity)
         {
             entity.DeletedDate = DateTime.Now;
