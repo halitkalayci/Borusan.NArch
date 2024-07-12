@@ -6,6 +6,6 @@ namespace Application.Repositories
         where TEntity : BaseEntity<TId>, new()
     {
         // GetAllAsync GetAsync vs..
-        Task<TEntity> AddAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     }
 }

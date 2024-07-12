@@ -28,11 +28,11 @@ namespace Persistence.Repositories
             return entity;
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken=default)
         {
             entity.CreatedDate = DateTime.Now;
-            await Context.AddAsync(entity);
-            Context.SaveChanges();
+            await Context.AddAsync(entity, cancellationToken);
+            await Context.SaveChangesAsync(cancellationToken);
             return entity;
         }
 
