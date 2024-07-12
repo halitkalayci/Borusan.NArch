@@ -28,7 +28,7 @@ namespace Application.Features.Brands.Commands.Create
                 _brandRepository = brandRepository;
             }
 
-            public Task<Unit> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
                 // İlgili request ile istediğimiz işlemi yapabiliriz.
                 Brand brand = new Brand()
@@ -36,8 +36,8 @@ namespace Application.Features.Brands.Commands.Create
                     Name = request.Name,
                 };
 
-                _brandRepository.Add(brand);
-                return (Task<Unit>)Task.CompletedTask;
+                await _brandRepository.AddAsync(brand);
+                return Unit.Value;
             }
         }
     }

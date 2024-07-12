@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Repositories
 {
-    public interface IBrandRepository : IBaseRepository<Brand, Guid>
+    public interface IBrandRepository : IBaseRepository<Brand, Guid>, IAsyncRepository<Brand,Guid>
     {
     }
 }

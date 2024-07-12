@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-    public class EfBaseRepository<TEntity, TId, TContext> : IBaseRepository<TEntity, TId>
+    public class EfBaseRepository<TEntity, TId, TContext> : IBaseRepository<TEntity, TId>, IAsyncRepository<TEntity,TId>
         where TEntity : BaseEntity<TId>, new()
         where TContext : DbContext
     {
@@ -28,9 +28,12 @@ namespace Persistence.Repositories
             return entity;
         }
 
-        public Task<TEntity> AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            entity.CreatedDate = DateTime.Now;
+            await Context.AddAsync(entity);
+            Context.SaveChanges();
+            return entity;
         }
 
         public void Delete(TEntity entity)
