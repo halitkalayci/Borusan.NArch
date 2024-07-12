@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Application.Repositories;
+using AutoMapper;
 
 namespace Application.Features.Brands.Commands.Create
 {
@@ -22,19 +23,26 @@ namespace Application.Features.Brands.Commands.Create
             // Gerekli bağımlılıklar
 
             private readonly IBrandRepository _brandRepository;
-
-            public CreateBrandCommandHandler(IBrandRepository brandRepository)
+            private readonly IMapper _mapper;
+            public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
             {
                 _brandRepository = brandRepository;
+                _mapper = mapper;
             }
 
             public async Task<CreatedBrandResponse> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
                 // İlgili request ile istediğimiz işlemi yapabiliriz.
-                Brand brand = new Brand()
-                {
-                    Name = request.Name,
-                };
+
+                // X -> Brand
+
+                // Automapper => Eğer isimler aynı ise maplemeyi otomatize eder.
+                //Brand brand = new Brand()
+                //{
+                //    Name = request.Name,
+                //};
+
+                Brand brand = _mapper.Map<Brand>(request);
 
                 Brand addedBrand = await _brandRepository.AddAsync(brand);
 

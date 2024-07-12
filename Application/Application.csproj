@@ -17,11 +17,11 @@
     <Folder Include="Features\Brands\Queries\GetAll\" />
     <Folder Include="Features\Brands\Queries\GetById\" />
     <Folder Include="Features\Brands\Rules\" />
-    <Folder Include="Features\Brands\Profiles\" />
     <Folder Include="Features\Car\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MediatR" Version="12.3.0" />
   </ItemGroup>
 
