@@ -3,6 +3,7 @@ using Persistence.Contexts;
 using Persistence.Repositories;
 using System.Reflection;
 using Persistence;
+using Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddApplicationServices();  // 
 builder.Services.AddPersistenceServices();
 
 var app = builder.Build();
