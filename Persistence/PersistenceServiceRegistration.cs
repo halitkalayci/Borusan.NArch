@@ -17,6 +17,7 @@ namespace Persistence
             // builder.Services.AddPersistenceServices();
             services.AddDbContext<BorusanDbContext>();
             services.AddScoped<IBrandRepository, EfBrandRepository>();
+            services.AddScoped<IUserRepository, EfUserRepository>();
 
             return services;
         }
