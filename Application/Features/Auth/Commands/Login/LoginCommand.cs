@@ -1,4 +1,5 @@
-﻿using Application.Repositories;
+﻿using Application.Hashing;
+using Application.Repositories;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -28,6 +29,16 @@ namespace Application.Features.Auth.Commands.Login
                 // Login
                 // Lambda Expression
                 User? user = await _userRepository.GetAsync(i => i.Email == request.Email);
+
+                // Business Rules
+                if (user == null)
+                    throw new Exception("Login failed."); // Login endpointlerinde genellikle her hata mesajı aynıdır. 
+
+
+                if (!HashingHelper.VerifyPasswordHash(request.Password, user.PasswordSalt, user.PasswordHash))
+                    throw new Exception("Login failed.");
+
+                return new() { Token = "" };
             }
         }
     }

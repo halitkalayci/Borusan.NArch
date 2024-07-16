@@ -16,5 +16,11 @@ namespace Application.Hashing
             passwordSalt = hmac.Key;
             passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
         }
+        public static bool VerifyPasswordHash(string password, byte[] passwordSalt, byte[] passwordHash)
+        {
+            using HMACSHA512 hmac = new(passwordSalt); // Geçerli salt ile bir şifreleyici
+            byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password)); // Geçerli salt ile yeni gelen şifreyi hashledim
+            return hash.SequenceEqual(passwordHash); // eski hashlenmiş ile şu an hashlenmişi karşılaştırdım.
+        }
     }
 }
