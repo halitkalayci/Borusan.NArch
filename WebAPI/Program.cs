@@ -23,6 +23,7 @@ builder.Services
     {
         options.TokenValidationParameters = new()
         {
+            ClockSkew = TimeSpan.Zero,
             ValidateIssuer = true,
             ValidIssuer = tokenOptions.Issuer,
             ValidateAudience = true,
@@ -32,6 +33,7 @@ builder.Services
         };
     });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices(tokenOptions!); 
 builder.Services.AddPersistenceServices();
 var app = builder.Build();

@@ -14,15 +14,21 @@ namespace WebAPI.Controllers
     public class BrandsController : ControllerBase
     {
         private readonly IMediator _mediator;
-
-        public BrandsController(IMediator mediator)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BrandsController(IMediator mediator, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateBrandCommand createBrandCommand)
         {
+            var user = _httpContextAccessor.HttpContext.User;
+
+            if (!user.Identity.IsAuthenticated)
+                throw new Exception("Giriş yapmadan bu endpointi çalıştıramazsınız.");
+
             CreatedBrandResponse? response = await _mediator.Send(createBrandCommand);
 
             return Created("", response);
