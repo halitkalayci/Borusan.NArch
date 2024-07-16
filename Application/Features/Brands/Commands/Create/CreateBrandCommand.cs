@@ -42,6 +42,8 @@ namespace Application.Features.Brands.Commands.Create
                 //    Name = request.Name,
                 //};
 
+                // Loglama kodları.
+
                 Brand brand = _mapper.Map<Brand>(request);
 
                 Brand addedBrand = await _brandRepository.AddAsync(brand);

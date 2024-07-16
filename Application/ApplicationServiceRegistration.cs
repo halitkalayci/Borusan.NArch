@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Pipeline;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Application
             services.AddMediatR(configuration =>
             {
                 configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+                configuration.AddOpenBehavior(typeof(ExampleBehavior<,>));
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
