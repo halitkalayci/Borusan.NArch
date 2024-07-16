@@ -14,7 +14,7 @@ namespace Application
 {
     public static class ApplicationServiceRegistration
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, TokenOptions tokenOptions)
         {
             services.AddMediatR(configuration =>
             {
@@ -24,7 +24,7 @@ namespace Application
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddScoped<ITokenHelper, JwtHelper>();
+            services.AddScoped<ITokenHelper, JwtHelper>(_ => new JwtHelper(tokenOptions));
             return services;
         }
     }

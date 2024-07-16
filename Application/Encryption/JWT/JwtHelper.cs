@@ -12,19 +12,27 @@ namespace Application.Encryption.JWT
 {
     public class JwtHelper : ITokenHelper
     {
+        private readonly TokenOptions _tokenOptions;
+
+        public JwtHelper(TokenOptions tokenOptions)
+        {
+            _tokenOptions = tokenOptions;
+        }
+
         public string CreateToken(User user)
         {
-            DateTime expirationDate = DateTime.Now.AddMinutes(15); // Konfigürasyondan gelmeli.
+            DateTime expirationDate = DateTime.Now.AddMinutes(_tokenOptions.Expiration); // Konfigürasyondan gelmeli.
 
-            byte[] key = Encoding.UTF8.GetBytes("ABC123456789ABC123456789BWEQV124V12BARSRQWNRG14BQCQWRBQWRNQWMQW");
+
+            byte[] key = Encoding.UTF8.GetBytes(_tokenOptions.SecurityKey);
             // Simetrik, Asimetrik
             SecurityKey securityKey = new SymmetricSecurityKey(key);
 
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             JwtSecurityToken jwtSecurityToken = new(
-                issuer: "borusanotomotiv", 
-                audience: "borusancustomers", 
+                issuer: _tokenOptions.Issuer, 
+                audience: _tokenOptions.Audience, 
                 notBefore: DateTime.Now, 
                 expires: expirationDate,
                 signingCredentials: signingCredentials,

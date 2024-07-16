@@ -4,6 +4,7 @@ using Persistence.Repositories;
 using System.Reflection;
 using Persistence;
 using Application;
+using Application.Encryption.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddApplicationServices();  // 
+TokenOptions? tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+builder.Services.AddApplicationServices(tokenOptions!);  // 
 builder.Services.AddPersistenceServices();
 
 var app = builder.Build();
