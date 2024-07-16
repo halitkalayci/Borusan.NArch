@@ -1,4 +1,6 @@
-﻿using Application.Pipeline;
+﻿using Application.Features.Brands.Commands.Create;
+using Application.Pipeline.Example;
+using Application.Pipeline.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ namespace Application
             {
                 configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
                 configuration.AddOpenBehavior(typeof(ExampleBehavior<,>));
+                configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

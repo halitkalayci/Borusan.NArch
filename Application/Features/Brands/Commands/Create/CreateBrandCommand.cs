@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 using Domain.Entities;
 using Application.Repositories;
 using AutoMapper;
+using Application.Pipeline.Logging;
 
 namespace Application.Features.Brands.Commands.Create
 {
     // Unit => Fonksiyonda void ne ise request'de o.
-    public class CreateBrandCommand : IRequest<CreatedBrandResponse>
+    public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ILoggableRequest
     {
         // Komutun işlevini yerine getirmesi için alması gereken argümanlar.
 

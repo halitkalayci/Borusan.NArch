@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Pipeline
+namespace Application.Pipeline.Example
 {
     public class ExampleBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
