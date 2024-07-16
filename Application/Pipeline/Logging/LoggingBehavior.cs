@@ -12,7 +12,7 @@ namespace Application.Pipeline.Logging
 
     // Behavior'ın sadece istediğim requestlerde çalışmasını nasıl sağlarım??
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : ILoggableRequest, new()
+       where TRequest : IRequest<TResponse>, ILoggableRequest, new ()
     {
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {

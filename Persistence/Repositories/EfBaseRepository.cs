@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,6 +49,23 @@ namespace Persistence.Repositories
         public List<TEntity> GetAll()
         {
             return Context.Set<TEntity>().Where(entity=>!entity.DeletedDate.HasValue).ToList();
+        }
+
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> queryable = Context.Set<TEntity>();
+
+            if(predicate != null)
+                queryable = queryable.Where(predicate);
+
+            return await queryable.ToListAsync();
+        }
+
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        {
+            IQueryable<TEntity> queryable = Context.Set<TEntity>();
+
+            return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
         }
 
         public TEntity? GetById(TId id)
