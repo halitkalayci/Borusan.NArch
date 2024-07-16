@@ -1,4 +1,5 @@
-﻿using Application.Features.Brands.Commands.Create;
+﻿using Application.Encryption.JWT;
+using Application.Features.Brands.Commands.Create;
 using Application.Pipeline.Example;
 using Application.Pipeline.Logging;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace Application
             });
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddScoped<ITokenHelper, JwtHelper>();
             return services;
         }
     }

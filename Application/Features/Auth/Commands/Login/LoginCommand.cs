@@ -1,4 +1,5 @@
-﻿using Application.Hashing;
+﻿using Application.Encryption.JWT;
+using Application.Hashing;
 using Application.Repositories;
 using Domain.Entities;
 using MediatR;
@@ -18,10 +19,12 @@ namespace Application.Features.Auth.Commands.Login
         public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         {
             private readonly IUserRepository _userRepository;
+            private readonly ITokenHelper _tokenHelper;
 
-            public LoginCommandHandler(IUserRepository userRepository)
+            public LoginCommandHandler(IUserRepository userRepository, ITokenHelper tokenHelper)
             {
                 _userRepository = userRepository;
+                _tokenHelper = tokenHelper;
             }
 
             public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -38,7 +41,7 @@ namespace Application.Features.Auth.Commands.Login
                 if (!HashingHelper.VerifyPasswordHash(request.Password, user.PasswordSalt, user.PasswordHash))
                     throw new Exception("Login failed.");
 
-                return new() { Token = "" };
+                return new() { Token = _tokenHelper.CreateToken(user) };
             }
         }
     }
