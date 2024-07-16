@@ -17,6 +17,7 @@
     <Folder Include="Features\Brands\Queries\GetById\" />
     <Folder Include="Features\Brands\Rules\" />
     <Folder Include="Features\Car\" />
+    <Folder Include="Pipeline\Authentication\" />
   </ItemGroup>
 
   <ItemGroup>
