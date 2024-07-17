@@ -3,6 +3,7 @@ using Application.Features.Brands.Queries.GetAll;
 using Application.Repositories;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Persistence.Contexts;
@@ -24,17 +25,11 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateBrandCommand createBrandCommand)
         {
-            // Buradaki kontrolü olabildiğince dinamik olacak şekilde, pipeline yapısı ile kodlayıp "Application" katmanına taşımak.
+            // Buradaki kontrolü olabildiğince dinamik olacak şekilde, pipeline yapısı ile kodlayıp "Application" katmanına taşımak. ✅✅
 
             // Core katmanı implementasyonu, (ARAŞTIRMA) nedir? neden kullanılır?
             // nArch
             // https://github.com/kodlamaio-projects/nArchitecture.core
-
-            var user = _httpContextAccessor.HttpContext.User;
-
-            if (!user.Identity.IsAuthenticated)
-                throw new Exception("Giriş yapmadan bu endpointi çalıştıramazsınız.");
-
             CreatedBrandResponse? response = await _mediator.Send(createBrandCommand);
 
             return Created("", response);

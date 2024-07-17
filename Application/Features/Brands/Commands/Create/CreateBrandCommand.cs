@@ -8,16 +8,18 @@ using Domain.Entities;
 using Application.Repositories;
 using AutoMapper;
 using Application.Pipeline.Logging;
+using Application.Pipeline.Auth;
 
 namespace Application.Features.Brands.Commands.Create
 {
     // Unit => Fonksiyonda void ne ise request'de o.
-    public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ILoggableRequest
+    public class CreateBrandCommand : IRequest<CreatedBrandResponse>, ILoggableRequest, ISecuredRequest
     {
         // Komutun işlevini yerine getirmesi için alması gereken argümanlar.
 
         public string Name { get; set; }
 
+        public string[] Roles => throw new NotImplementedException();
 
         public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
         {

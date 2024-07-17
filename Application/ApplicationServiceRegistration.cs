@@ -1,5 +1,6 @@
 ﻿using Application.Encryption.JWT;
 using Application.Features.Brands.Commands.Create;
+using Application.Pipeline.Auth;
 using Application.Pipeline.Example;
 using Application.Pipeline.Logging;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +20,12 @@ namespace Application
             services.AddMediatR(configuration =>
             {
                 configuration.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-                configuration.AddOpenBehavior(typeof(ExampleBehavior<,>));
+                // SIRA ÖNEMLİ!
                 configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                configuration.AddOpenBehavior(typeof(AuthBehavior<,>));
+                configuration.AddOpenBehavior(typeof(ExampleBehavior<,>));
+                // 
             });
-
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<ITokenHelper, JwtHelper>(_ => new JwtHelper(tokenOptions));
             return services;
