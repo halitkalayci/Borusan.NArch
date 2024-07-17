@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Application.Pipeline.Auth
             bool isAuthenticated = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
 
             if (!isAuthenticated)
-                throw new Exception();
+                throw new Exception("Giriş yapmanız gerekiyor.");
 
             // Authorization...
             if(request.Roles.Any())
@@ -32,6 +33,12 @@ namespace Application.Pipeline.Auth
                 //TODO: Implement after role impl.
                 var user = _httpContextAccessor.HttpContext.User;
 
+                var userRoles = user.Claims.Where(i => i.Type == ClaimTypes.Role);
+
+                bool hasMatch = userRoles.Any(role => request.Roles.Any(i => i == role.Value));
+
+                if (!hasMatch)
+                    throw new Exception("Rol yetersiz.");
             }
 
             return await next();
