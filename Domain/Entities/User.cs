@@ -13,5 +13,7 @@ namespace Domain.Entities
         public string LastName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+
+        public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; }
     }
 }

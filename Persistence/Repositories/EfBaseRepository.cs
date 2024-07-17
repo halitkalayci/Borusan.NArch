@@ -1,6 +1,7 @@
 ﻿using Application.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,20 +52,32 @@ namespace Persistence.Repositories
             return Context.Set<TEntity>().Where(entity=>!entity.DeletedDate.HasValue).ToList();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate = null, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> GetAllAsync(
+            Expression<Func<TEntity, bool>> predicate = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<TEntity> queryable = Context.Set<TEntity>();
 
-            if(predicate != null)
+            if (include != null)
+                queryable = include(queryable);
+
+            if (predicate != null)
                 queryable = queryable.Where(predicate);
+           
 
             return await queryable.ToListAsync();
         }
 
-        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public async Task<TEntity?> GetAsync(
+            Expression<Func<TEntity, bool>> predicate,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            CancellationToken cancellationToken = default
+            )
         {
             IQueryable<TEntity> queryable = Context.Set<TEntity>();
-
+            if (include != null)
+                queryable = include(queryable);
             return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
         }
 

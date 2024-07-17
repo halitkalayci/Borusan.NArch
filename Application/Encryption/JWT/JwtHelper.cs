@@ -19,7 +19,7 @@ namespace Application.Encryption.JWT
             _tokenOptions = tokenOptions;
         }
 
-        public string CreateToken(User user)
+        public string CreateToken(User user, IList<OperationClaim> operationClaims)
         {
             DateTime expirationDate = DateTime.Now.AddMinutes(_tokenOptions.Expiration); // Konfigürasyondan gelmeli.
 
@@ -36,7 +36,7 @@ namespace Application.Encryption.JWT
                 notBefore: DateTime.Now, 
                 expires: expirationDate,
                 signingCredentials: signingCredentials,
-                claims: SetClaims(user)
+                claims: SetClaims(user, operationClaims)
             );
 
             JwtSecurityTokenHandler jwtSecurityTokenHandler = new();
@@ -44,10 +44,18 @@ namespace Application.Encryption.JWT
             return jwtSecurityTokenHandler.WriteToken(jwtSecurityToken);
         }
 
-        private IEnumerable<Claim> SetClaims(User user)
+        private IEnumerable<Claim> SetClaims(User user, IList<OperationClaim> operationClaims)
         {
             List<Claim> claims = new();
-            claims.Add(new Claim("Deneme", "123"));
+
+            claims.Add(new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+            foreach (var item in operationClaims)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item.Name));
+            }
+
             return claims;
         }
     }

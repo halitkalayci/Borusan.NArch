@@ -3,6 +3,7 @@ using Application.Hashing;
 using Application.Repositories;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,10 @@ namespace Application.Features.Auth.Commands.Login
             {
                 // Login
                 // Lambda Expression
-                User? user = await _userRepository.GetAsync(i => i.Email == request.Email);
+                User? user = await _userRepository.GetAsync(
+                    predicate: i => i.Email == request.Email, 
+                    include: i=>i.Include(j=>j.UserOperationClaims).ThenInclude(j=>j.OperationClaim)
+                    );
 
                 // Business Rules
                 if (user == null)
@@ -41,7 +45,7 @@ namespace Application.Features.Auth.Commands.Login
                 if (!HashingHelper.VerifyPasswordHash(request.Password, user.PasswordSalt, user.PasswordHash))
                     throw new Exception("Login failed.");
 
-                return new() { Token = _tokenHelper.CreateToken(user) };
+                return new() { Token = _tokenHelper.CreateToken(user, user.UserOperationClaims.Select(i=>i.OperationClaim).ToList()) };
             }
         }
     }

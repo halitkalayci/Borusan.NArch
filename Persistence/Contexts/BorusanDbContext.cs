@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Persistence.Contexts
 {
+    // 10:10
     public class BorusanDbContext : DbContext
     {
         public DbSet<Car> Cars { get; set; }
@@ -32,6 +33,7 @@ namespace Persistence.Contexts
                 .WithMany(b => b.Cars)
                 .HasForeignKey(c => c.BrandId);
 
+            //modelBuilder.Entity<UserOperationClaim>().HasOne(i => i.User).WithMany(i => i.UserOperationClaims).HasForeignKey(i => i.Abc);
 
             base.OnModelCreating(modelBuilder);
         }
