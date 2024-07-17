@@ -19,7 +19,7 @@ namespace Application.Features.Brands.Commands.Create
 
         public string Name { get; set; }
 
-        public string[] Roles => throw new NotImplementedException();
+        public string[] Roles => new string[] { };
 
         public class CreateBrandCommandHandler : IRequestHandler<CreateBrandCommand, CreatedBrandResponse>
         {
